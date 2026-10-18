@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Shop.Application.Products.Dtos;
 using Shop.Domain.Entities.Catalog;
 using Shop.Domain.Exceptions;
 using Shop.Domain.Repositories;
@@ -14,9 +15,9 @@ public class CreateProductCommandHandler(
     IProductRepository productRepository,
     ICategoryRepository categoryRepository,
     IValidator<CreateProductCommand> validator
-    ) : IRequestHandler<CreateProductCommand, int>
+    ) : IRequestHandler<CreateProductCommand, ProductDto>
 {
-    public async Task<int> Handle(
+    public async Task<ProductDto> Handle(
         CreateProductCommand request,
         CancellationToken cancellationToken)
     {
@@ -27,8 +28,10 @@ public class CreateProductCommandHandler(
         Category? category = await categoryRepository.GetByIdAsync(request.CategoryId)
             ?? throw new NotFoundException(nameof(Category), request.CategoryId.ToString());
 
-        Product product = mapper.Map<Product>(request);
+        Product entity = mapper.Map<Product>(request);
 
-        return await productRepository.CreateAsync(product);
+        var product = await productRepository.AddAsync(entity);
+
+        return mapper.Map<ProductDto>(product);
     }
 }

@@ -32,10 +32,10 @@ internal class ProductRepository(ShopDbContext dbContext) : IProductRepository
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<int> CreateAsync(Product entity)
+    public async Task<Product> AddAsync(Product entity)
     {
         await dbContext.AddAsync(entity);
         await dbContext.SaveChangesAsync();
-        return entity.Id;
+        return entity;
     }
 }

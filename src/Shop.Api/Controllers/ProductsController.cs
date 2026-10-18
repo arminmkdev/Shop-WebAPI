@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Products.Commands.CreateProduct;
 using Shop.Application.Products.Commands.DeleteProduct;
@@ -7,6 +8,7 @@ using Shop.Application.Products.Commands.UploadProductImage;
 using Shop.Application.Products.Dtos;
 using Shop.Application.Products.Queries.GetAllProducts;
 using Shop.Application.Products.Queries.GetProductById;
+using Shop.Domain.Constants;
 
 namespace Shop.Api.Controllers;
 
@@ -33,16 +35,17 @@ public class ProductsController(
     }
 
     [HttpPost]
-    public async Task<ActionResult<ProductDto>> CreateProduct(
+    [Authorize(Roles = UserRoles.Admin)]
+    public async Task<IActionResult> CreateProduct(
        CreateProductCommand command)
     {
-        int productId = await mediator.Send(command);
+        ProductDto product = await mediator.Send(command);
 
-        return CreatedAtAction(nameof(GetProduct), new { id = productId }, productId);
+        return CreatedAtAction(nameof(GetProduct), new { id = product.ProductId }, product);
     }
 
     [HttpPatch("{id}")]
-    public async Task<ActionResult> UpdateProduct(
+    public async Task<IActionResult> UpdateProduct(
         [FromRoute] int id,
         [FromBody] UpdateProductCommand command)
     {
