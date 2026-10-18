@@ -3,6 +3,9 @@
 Asp.NetCore 10 , Entity:
 Product, category, cart , order
 
+User : admin@gmail.com
+Password : Test123?
+
 Features:
 * Web Api
 * Clean Architecure 
