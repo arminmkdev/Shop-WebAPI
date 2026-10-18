@@ -83,11 +83,7 @@ async function updateQuantity(item, quantity) {
 async function removeItem(item) {
   try {
     await apiDelete(
-      `${API_PATHS.cartItems}/${encodeURIComponent(item.cartItemId)}`,
-      {
-        userId: item.userId || getCurrentUserId(),
-        cartItemId: Number(item.cartItemId)
-      }
+      `${API_PATHS.cartItems}/${encodeURIComponent(item.cartItemId)}`
     );
     await loadCart();
   } catch (error) {
@@ -125,14 +121,13 @@ document
       await apiPost(API_PATHS.orders);
       await apiDelete(API_PATHS.cart);
       showMessage(pageMessage, 'Order created successfully.', 'success');
-      await loadCart();
+      window.location.href = '../orders.html';
     } catch (error) {
       showMessage(
         pageMessage,
         `Could not place order: ${error.message}`,
         'danger'
       );
-      console.log(API_PATHS.orders);
     }
   });
 loadCart();

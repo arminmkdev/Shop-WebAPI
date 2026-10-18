@@ -11,14 +11,39 @@
     <link href="css/site.css" rel="stylesheet" />
   </head>
   <body>
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="index.html">Shop</a>
-        <div class="d-flex gap-2">
-          <a class="btn btn-outline-light btn-sm" href="index.html">
-            Continue shopping
-          </a>
-          <a class="btn btn-outline-light btn-sm" href="login.html">Login</a>
+        <a class="navbar-brand fw-semibold" href="index.html">Shop</a>
+        <button
+          class="navbar-toggler"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNav"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="mainNav" class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="index.html">Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="cart.html">
+                Cart
+                <span id="cartCount" class="badge text-bg-primary">0</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="orders.html">My Orders</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="admin.html">Admin</a>
+            </li>
+          </ul>
+          <div class="d-flex gap-2" id="authNav">
+            <a class="btn btn-outline-light btn-sm" href="login.html">Login</a>
+            <a class="btn btn-primary btn-sm" href="register.html">Register</a>
+          </div>
         </div>
       </div>
     </nav>
