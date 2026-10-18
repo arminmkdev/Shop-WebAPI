@@ -1,6 +1,4 @@
-const API_BASE_URL = (
-  import.meta.env.VITE_API_BASE_URL || 'https://localhost:5001'
-).replace(/\/+$/, '');
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL.replace(/\/+$/, '');
 export const API_PATHS = {
   register: '/identity/register',
   login: '/identity/login',
