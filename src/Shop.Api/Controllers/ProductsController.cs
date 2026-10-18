@@ -45,6 +45,7 @@ public class ProductsController(
     }
 
     [HttpPatch("{id}")]
+    [Authorize(Roles = UserRoles.Admin)]
     public async Task<IActionResult> UpdateProduct(
         [FromRoute] int id,
         [FromBody] UpdateProductCommand command)
@@ -57,6 +58,7 @@ public class ProductsController(
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = UserRoles.Admin)]
     public async Task<ActionResult> DeleteProduct([FromRoute] int id)
     {
         await mediator.Send(new DeleteProductCommand(id));
