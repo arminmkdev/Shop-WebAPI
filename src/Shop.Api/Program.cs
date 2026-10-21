@@ -14,14 +14,14 @@ builder.Services.AddInfrastrucure(builder.Configuration);
 
 WebApplication app = builder.Build();
 
-var scope = app.Services.CreateScope();
-var seeder = scope.ServiceProvider.GetRequiredService<IShopSeeder>();
+IServiceScope scope = app.Services.CreateScope();
+IShopSeeder seeder = scope.ServiceProvider.GetRequiredService<IShopSeeder>();
 
 await seeder.Seed();
 
 app.UseCors();
 
-app.UseMiddleware<ErrorHandlingMiddle>();
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseMiddleware<RequestTimeLoggingMiddleware>();
 
 app.UseSerilogRequestLogging();

@@ -1,10 +1,10 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Shop.Application.Common.Interfaces;
+using Shop.Application.Interfaces;
+using Shop.Application.Repositories;
 using Shop.Domain.Entities.Catalog;
 using Shop.Domain.Exceptions;
-using Shop.Domain.Repositories;
 
 namespace Shop.Application.Products.Commands.UploadProductImage;
 
@@ -24,7 +24,7 @@ public sealed class UploadProductImageCommandHandler(
 
         await validator.ValidateAndThrowAsync(request, cancellationToken);
 
-        var product = await productRepository
+        Product product = await productRepository
             .GetByIdAsync(request.ProductId)
             ?? throw new NotFoundException(
                 nameof(Product),

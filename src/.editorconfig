@@ -3,14 +3,14 @@ root = true
 [*]
 charset = utf-8
 end_of_line = crlf
-insert_final_newline = true
+insert_final_newline = true 
 indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
 [*.cs]
 indent_style = space
-indent_size = 4
+indent_size = 4  
 
 csharp_style_var_when_type_is_apparent = true:warning
 csharp_style_var_for_built_in_types = true:warning
@@ -33,6 +33,9 @@ csharp_style_prefer_implicit_type = true:suggestion
 dotnet_style_object_initializer = true:suggestion
 dotnet_style_collection_initializer = true:suggestion
 
-dotnet_diagnostic.IDE0008.severity = suggestion
+dotnet_diagnostic.IDE0008.severity = warning
 dotnet_diagnostic.CS9113.severity = error
 dotnet_diagnostic.IDE0005.severity = error
+
+# CS4014: Because this call is not awaited, execution of the current method continues before the call is completed
+dotnet_diagnostic.CS4014.severity = error

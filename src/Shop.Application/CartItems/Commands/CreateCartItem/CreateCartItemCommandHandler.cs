@@ -2,10 +2,10 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Shop.Application.Repositories;
 using Shop.Domain.Entities.Carts;
 using Shop.Domain.Entities.Catalog;
 using Shop.Domain.Exceptions;
-using Shop.Domain.Repositories;
 using Shop.Domain.Repositories.Shopping;
 
 namespace Shop.Application.CartItems.Commands.CreateCartItem;

@@ -38,7 +38,7 @@ public static class WebApplicationBuilderExtensions
 
         builder.Services.AddEndpointsApiExplorer();
 
-        builder.Services.AddScoped<ErrorHandlingMiddle>();
+        builder.Services.AddScoped<ErrorHandlingMiddleware>();
         builder.Services.AddScoped<RequestTimeLoggingMiddleware>();
 
 

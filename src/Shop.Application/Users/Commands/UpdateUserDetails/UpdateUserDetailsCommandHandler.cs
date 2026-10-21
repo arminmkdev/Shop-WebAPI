@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Shop.Domain.Entities;
 using Shop.Domain.Exceptions;
 
-namespace Shop.Application.Users.Commands;
+namespace Shop.Application.Users.Commands.UpdateUserDetails;
 
 public class UpdateUserDetailsCommandHandler(
     ILogger<UpdateUserDetailsCommandHandler> logger,

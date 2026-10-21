@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Application.Common;
 using Shop.Application.Products.Commands.CreateProduct;
 using Shop.Application.Products.Commands.DeleteProduct;
 using Shop.Application.Products.Commands.UpdateProduct;
@@ -14,14 +15,17 @@ namespace Shop.Api.Controllers;
 
 [ApiController]
 [Route("products")]
+[Authorize]
 public class ProductsController(
     IMediator mediator
     ) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts(
+        [FromQuery] GetAllProductsQuery query)
     {
-        IEnumerable<ProductDto> products = await mediator.Send(new GetAllProductsQuery());
+        PagedResult<ProductDto> products = await mediator.Send(query);
 
         return Ok(products);
     }
@@ -67,7 +71,7 @@ public class ProductsController(
     }
 
     [HttpPost("{id:int}/image")]
-    public async Task<IActionResult> UploadImage(
+    public async Task<IActionResult> UploadProductImage(
     int id,
     IFormFile file,
     CancellationToken cancellationToken)
@@ -75,7 +79,7 @@ public class ProductsController(
         if (file is null || file.Length == 0)
             return BadRequest("select image");
 
-        await using var stream = file.OpenReadStream();
+        await using Stream stream = file.OpenReadStream();
 
         var imageUrl = await mediator.Send(
             new UploadProductImageCommand(

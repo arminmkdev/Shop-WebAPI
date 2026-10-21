@@ -1,4 +1,4 @@
-namespace Shop.Application.Common.Interfaces;
+namespace Shop.Application.Interfaces;
 
 public interface IProductImageStorage
 {

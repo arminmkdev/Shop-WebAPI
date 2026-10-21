@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Shop.Application.Users;
-using Shop.Domain.Exceptions;
 
 namespace Shop.Infrastructure.Users;
 
@@ -18,7 +17,7 @@ public class UserContext(IHttpContextAccessor httpContextAccessor) : IUserContex
 
         if (user.Identity == null || !user.Identity.IsAuthenticated)
         {
-            throw new UnauthorizedException();
+            return null;
         }
 
         var userId = user.FindFirst(ClaimTypes.NameIdentifier)!.Value;

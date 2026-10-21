@@ -17,7 +17,7 @@ public class CartsController(IMediator mediator, IUserContext userContext) : Con
     [HttpGet]
     public async Task<ActionResult<CartDto>> GetCart()
     {
-        var user = userContext.GetCurrentUser();
+        CurrentUser? user = userContext.GetCurrentUser();
 
         CartDto? cart = await mediator.Send(new GetCartByIdQuery(user!.Id));
 
@@ -29,7 +29,7 @@ public class CartsController(IMediator mediator, IUserContext userContext) : Con
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteCart()
     {
-        var user = userContext.GetCurrentUser();
+        CurrentUser? user = userContext.GetCurrentUser();
 
         await mediator.Send(new DeleteCartCommand(user!.Id));
 

@@ -1,29 +1,43 @@
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Shop.Application.Common;
 using Shop.Application.Products.Dtos;
+using Shop.Application.Repositories;
 using Shop.Domain.Entities.Catalog;
-using Shop.Domain.Repositories;
 
 namespace Shop.Application.Products.Queries.GetAllProducts;
 
 public class GetAllProductsQueryHandler(
     ILogger<GetAllProductsQueryHandler> logger,
     IProductRepository productRepository,
-    IMapper mapper
+    IMapper mapper,
+    IValidator<GetAllProductsQuery> validator
     ) :
-    IRequestHandler<GetAllProductsQuery, IEnumerable<ProductDto>>
+    IRequestHandler<GetAllProductsQuery, PagedResult<ProductDto>>
 {
-    public async Task<IEnumerable<ProductDto>> Handle(
+    public async Task<PagedResult<ProductDto>> Handle(
         GetAllProductsQuery request,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Getting all products {@Products}", request);
 
-        IEnumerable<Product> products = await productRepository.GetAllAsync();
+        await validator.ValidateAndThrowAsync(request, cancellationToken);
+
+        (IEnumerable<Product>? products, var itemsCount) = await productRepository
+            .GetAllMatchingAsync(
+                request.SearchPhrase,
+                request.PageSize,
+                request.PageNumber,
+                request.SortBy,
+                request.SortDirection
+                );
 
         IEnumerable<ProductDto> productDtos = mapper.Map<IEnumerable<ProductDto>>(products);
 
-        return productDtos;
+        var result = new PagedResult<ProductDto>(productDtos, itemsCount, request.PageSize, request.PageNumber);
+
+        return result;
     }
 }

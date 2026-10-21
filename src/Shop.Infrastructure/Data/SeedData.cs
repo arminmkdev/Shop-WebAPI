@@ -23,86 +23,89 @@ public static class SeedData
 
         // Products
         modelBuilder.Entity<Product>().HasData(
-            new Product
-            {
-                Id = 1,
-                Name = "Men's Black Jacket",
-                Description = "A stylish black jacket suitable for everyday wear and cool weather.",
-                Price = 59,
-                CategoryId = 1,
-                ImageUrl = "/images/men/mens_jacket.jpg",
-                Quantity = 10
-            },
-            new Product
-            {
-                Id = 2,
-                Name = "Men's Running Shoes",
-                Description = "Lightweight running shoes designed for comfort, support, and daily workouts.",
-                Price = 59,
-                CategoryId = 1,
-                ImageUrl = "/images/men/mens_shoes.jpg",
-                Quantity = 10
-            },
-            new Product
-            {
-                Id = 3,
-                Name = "Men's Graphic Tee",
-                Description = "A casual graphic T-shirt made for comfortable everyday outfits.",
-                Price = 59,
-                CategoryId = 1,
-                ImageUrl = "/images/men/mens_tee.jpg",
-                Quantity = 10
-            },
-            new Product
-            {
-                Id = 4,
-                Name = "Men's Everyday Sneakers",
-                Description = "Versatile everyday sneakers that pair easily with casual and sporty clothing.",
-                Price = 59,
-                CategoryId = 1,
-                ImageUrl = "/images/men/mens_sneaker.jpg",
-                Quantity = 10
-            },
-            new Product
-            {
-                Id = 5,
-                Name = "Women's Summer Dress",
-                Description = "A lightweight summer dress with a comfortable fit, ideal for warm-weather outings.",
-                Price = 59,
-                CategoryId = 2,
-                ImageUrl = "/images/women/womens_dress.jpg",
-                Quantity = 10
-            },
-            new Product
-            {
-                Id = 6,
-                Name = "Women's Handbag",
-                Description = "A practical and elegant handbag for carrying everyday essentials.",
-                Price = 59,
-                CategoryId = 2,
-                ImageUrl = "/images/women/womens_bag.jpg",
-                Quantity = 10
-            },
-            new Product
-            {
-                Id = 7,
-                Name = "Women's Casual Tote",
-                Description = "A spacious casual tote bag suitable for shopping, work, and daily use.",
-                Price = 59,
-                CategoryId = 2,
-                ImageUrl = "/images/women/womens_tote.jpg",
-                Quantity = 10
-            },
-            new Product
-            {
-                Id = 8,
-                Name = "Women's Street Sneakers",
-                Description = "Modern street-style sneakers combining everyday comfort with a sporty look.",
-                Price = 59,
-                CategoryId = 2,
-                ImageUrl = "/images/women/womens_sneaker.jpg",
-                Quantity = 10
-            }
-        );
+    // Men's Collection
+    new
+    {
+        Id = 1,
+        Name = "Men's Classic Black Jacket",
+        Description = "A stylish black jacket suitable for everyday wear and cool weather.",
+        Price = 89,
+        CategoryId = 1,
+        ImageUrl = "/images/men/mens_jacket.jpg",
+        Quantity = 12
+    },
+    new
+    {
+        Id = 2,
+        Name = "Men's Performance Running Shoes",
+        Description = "Lightweight running shoes designed for comfort, support, and daily workouts.",
+        Price = 75,
+        CategoryId = 1,
+        ImageUrl = "/images/men/mens_shoes.jpg",
+        Quantity = 18
+    },
+    new
+    {
+        Id = 3,
+        Name = "Men's Urban Graphic Tee",
+        Description = "A modern graphic T-shirt made for comfortable everyday outfits.",
+        Price = 25,
+        CategoryId = 1,
+        ImageUrl = "/images/men/mens_tee.jpg",
+        Quantity = 35
+    },
+    new
+    {
+        Id = 4,
+        Name = "Men's Everyday White Sneakers",
+        Description = "Versatile sneakers that pair easily with casual and sporty clothing.",
+        Price = 64,
+        CategoryId = 1,
+        ImageUrl = "/images/men/mens_sneaker.jpg",
+        Quantity = 22
+    },
+
+    // Women's Collection
+    new
+    {
+        Id = 5,
+        Name = "Women's Floral Summer Dress",
+        Description = "A lightweight floral summer dress with a comfortable fit for warm-weather outings.",
+        Price = 68,
+        CategoryId = 2,
+        ImageUrl = "/images/women/womens_dress.jpg",
+        Quantity = 16
+    },
+    new
+    {
+        Id = 6,
+        Name = "Women's Elegant Leather Handbag",
+        Description = "An elegant everyday handbag with plenty of space for essential belongings.",
+        Price = 95,
+        CategoryId = 2,
+        ImageUrl = "/images/women/womens_bag.jpg",
+        Quantity = 9
+    },
+    new
+    {
+        Id = 7,
+        Name = "Women's Everyday Canvas Tote",
+        Description = "A spacious canvas tote bag ideal for shopping, work, and daily use.",
+        Price = 32,
+        CategoryId = 2,
+        ImageUrl = "/images/women/womens_tote.jpg",
+        Quantity = 28
+    },
+    new
+    {
+        Id = 8,
+        Name = "Women's Modern Street Sneakers",
+        Description = "Modern street-style sneakers combining everyday comfort with a sporty look.",
+        Price = 72,
+        CategoryId = 2,
+        ImageUrl = "/images/women/womens_sneaker.jpg",
+        Quantity = 14
+    }
+);
     }
 }

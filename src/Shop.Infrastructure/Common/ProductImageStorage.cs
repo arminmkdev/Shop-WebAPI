@@ -1,4 +1,4 @@
-using Shop.Application.Common.Interfaces;
+using Shop.Application.Interfaces;
 
 namespace Shop.Infrastructure.Common;
 

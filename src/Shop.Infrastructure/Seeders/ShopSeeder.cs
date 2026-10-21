@@ -41,6 +41,8 @@ internal class ShopSeeder(ShopDbContext dbContext) : IShopSeeder
                 UserName="owner@gmail.com",
                 NormalizedEmail="owner@gmail.com".ToUpper(),
                 NormalizedUserName="owner@gmail.com".ToUpper(),
+                Nationality="iran",
+                DateOfBirth=new DateOnly(2005,1,10),
                 PasswordHash="AQAAAAIAAYagAAAAEPicYtOaWyOvVqKDzy46TUqdAZbRCKTdsDZl6qdCt4HYJRB+m3vLiiy9QNJlaggm+A==",
             },
             new()
@@ -50,6 +52,8 @@ internal class ShopSeeder(ShopDbContext dbContext) : IShopSeeder
                 UserName="user@gmail.com",
                 NormalizedEmail="user@gmail.com".ToUpper(),
                 NormalizedUserName="user@gmail.com".ToUpper(),
+                Nationality="iran",
+                DateOfBirth=new DateOnly(2005,1,10),
                 PasswordHash="AQAAAAIAAYagAAAAEPicYtOaWyOvVqKDzy46TUqdAZbRCKTdsDZl6qdCt4HYJRB+m3vLiiy9QNJlaggm+A==",
             },
             new()
@@ -59,6 +63,8 @@ internal class ShopSeeder(ShopDbContext dbContext) : IShopSeeder
                 UserName="admin@gmail.com",
                 NormalizedEmail="admin@gmail.com".ToUpper(),
                 NormalizedUserName="admin@gmail.com".ToUpper(),
+                Nationality="iran",
+                DateOfBirth=new DateOnly(2005,1,10),
                 PasswordHash="AQAAAAIAAYagAAAAEPicYtOaWyOvVqKDzy46TUqdAZbRCKTdsDZl6qdCt4HYJRB+m3vLiiy9QNJlaggm+A=="
             }
             ];

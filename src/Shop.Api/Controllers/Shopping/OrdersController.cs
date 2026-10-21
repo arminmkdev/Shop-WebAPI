@@ -17,7 +17,7 @@ public sealed class OrdersController(IMediator mediator, IUserContext userContex
     [HttpGet]
     public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
     {
-        var user = userContext.GetCurrentUser();
+        CurrentUser? user = userContext.GetCurrentUser();
 
         IEnumerable<OrderDto> orderDtos = await mediator.Send(new GetAllOrdersQuery(user!.Id));
 
@@ -27,7 +27,7 @@ public sealed class OrdersController(IMediator mediator, IUserContext userContex
     [HttpGet("{orderId}")]
     public async Task<ActionResult<OrderDto>> GetOrder(int orderId)
     {
-        var user = userContext.GetCurrentUser();
+        CurrentUser? user = userContext.GetCurrentUser();
 
         OrderDto order = await mediator.Send(new GetOrderbyIdQuery(user!.Id, orderId));
 
@@ -37,7 +37,7 @@ public sealed class OrdersController(IMediator mediator, IUserContext userContex
     [HttpPost]
     public async Task<ActionResult> CreateOrder()
     {
-        var user = userContext.GetCurrentUser();
+        CurrentUser? user = userContext.GetCurrentUser();
 
         var id = await mediator.Send(new CreateOrderCommand(user!.Id));
 

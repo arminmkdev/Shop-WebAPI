@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.CartItems.Commands.CreateCartItem;
 using Shop.Application.CartItems.Commands.DeleteCartItem;
@@ -9,6 +10,7 @@ namespace Shop.Api.Controllers.Shopping;
 
 [ApiController]
 [Route("cartItems")]
+[Authorize]
 public sealed class CartItemsController(
     IMediator mediator, IUserContext userContext
     ) : ControllerBase
@@ -18,7 +20,7 @@ public sealed class CartItemsController(
     public async Task<ActionResult> CreateCartItem(
        [FromBody] CreateCartItemCommand command)
     {
-        var user = userContext.GetCurrentUser();
+        CurrentUser? user = userContext.GetCurrentUser();
 
         command.UserId = user!.Id;
 
@@ -33,7 +35,7 @@ public sealed class CartItemsController(
        [FromRoute] int cartItemId,
        [FromBody] UpdateCartItemCommand command)
     {
-        var user = userContext.GetCurrentUser();
+        CurrentUser? user = userContext.GetCurrentUser();
 
         command.UserId = user!.Id;
         command.CartItemId = cartItemId;
@@ -48,7 +50,7 @@ public sealed class CartItemsController(
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteCartItem([FromRoute] int cartItemId)
     {
-        var user = userContext.GetCurrentUser();
+        CurrentUser? user = userContext.GetCurrentUser();
 
         await mediator.Send(new DeleteCartItemCommand(user!.Id, cartItemId));
 
