@@ -1,0 +1,40 @@
+@ShopManagementSystem.Api_HostAddress = https://localhost:5001
+
+POST {{ShopManagementSystem.Api_HostAddress}}/products
+Content-Type: application/json
+
+{
+  "name":"aaaasdssssdddd",
+  "quantity":2,
+  "price":2,
+  "categoryId":
+  "a7f3c821-4b92-4d16-9e35-72c8f1a604b9"
+}
+
+###
+
+GET {{ShopManagementSystem.Api_HostAddress}}/products
+
+###
+
+@id=69af1330-67a4-4910-a09e-08df2469848c
+GET {{ShopManagementSystem.Api_HostAddress}}/products/{{id}}
+
+###
+
+PATCH {{ShopManagementSystem.Api_HostAddress}}/products/{{id}}
+Content-Type: application/json
+
+{
+  "name":"asasdfd",
+  "description":"asdf",
+  "categoryId":
+  "a7f3c821-4b92-4d16-9e35-72c8f1a604b9"
+
+}
+
+###
+
+GET {{ShopManagementSystem.Api_HostAddress}}/products/{id:int}
+
+###
