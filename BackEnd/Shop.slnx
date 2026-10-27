@@ -2,8 +2,14 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
   </Folder>
-  <Project Path="Shop.Api/Shop.Api.csproj" />
-  <Project Path="Shop.Application/Shop.Application.csproj" />
-  <Project Path="Shop.Domain/Shop.Domain.csproj" />
-  <Project Path="Shop.Infrastructure/Shop.Infrastructure.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/Shop.Api/Shop.Api.csproj" />
+    <Project Path="src/Shop.Application/Shop.Application.csproj" />
+    <Project Path="src/Shop.Domain/Shop.Domain.csproj" />
+    <Project Path="src/Shop.Infrastructure/Shop.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Shop.Api.Tests/Shop.Api.Tests.csproj" />
+    <Project Path="tests/Shop.Application.Tests/Shop.Application.Tests.csproj" />
+  </Folder>
 </Solution>
