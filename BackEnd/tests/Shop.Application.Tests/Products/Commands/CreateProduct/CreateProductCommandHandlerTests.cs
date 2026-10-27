@@ -68,6 +68,12 @@ public class CreateProductCommandHandlerTests
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
+        result.Should().NotBeNull();
         result.Quantity.Should().Be(productDto.Quantity);
+        result.Name.Should().Be(productDto.Name);
+        result.Description.Should().Be(productDto.Description);
+        result.Price.Should().Be(productDto.Price);
+        result.CategoryId.Should().Be(productDto.CategoryId);
+        result.ProductId.Should().Be(productDto.ProductId);
     }
 }
