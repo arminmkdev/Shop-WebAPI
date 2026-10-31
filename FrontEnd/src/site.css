@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap");
 :root {
   font-family: "DM Sans", sans-serif;
   color: #172033;
@@ -492,12 +492,12 @@ h3,
   color: #fff;
   padding: 34px 0 38px;
 }
-.admin-container {
+.admin-max-w-7xl mx-auto px-4 {
   max-width: 1500px;
   padding-left: clamp(16px, 3vw, 44px);
   padding-right: clamp(16px, 3vw, 44px);
 }
-.admin-topline .admin-container {
+.admin-topline .admin-max-w-7xl mx-auto px-4 {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1030,7 +1030,7 @@ h3,
   .admin-topline {
     padding: 27px 0;
   }
-  .admin-topline .admin-container {
+  .admin-topline .admin-max-w-7xl mx-auto px-4 {
     align-items: flex-start;
   }
   .admin-topline p {
@@ -1089,4 +1089,4 @@ h3,
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
+} */
