@@ -1,20 +1,9 @@
-import '../site.css';
-import '@tailwindcss/vite';
-
 export default function Footer() {
   return (
-    // <footer>
-    //   <div className="border border-amber-700 border-2">
-    //     <span>
-    //       Shop<span className="brand-dot">.</span>
-    //     </span>
-    //     <span>Thoughtful finds. Simple checkout.</span>
-    //   </div>
-    // </footer>
-    <footer>
-      <div className="container d-flex justify-content-between flex-wrap gap-2">
+    <footer className="bg-brand-900 text-brand-200 py-6 text-sm mt-5">
+      <div className="max-w-7xl mx-auto px-4 flex justify-between flex-wrap gap-2">
         <span>
-          Shop<span className="brand-dot">.</span>
+          Shop<span className="text-sky-400">.</span>
         </span>
         <span>Thoughtful finds. Simple checkout.</span>
       </div>

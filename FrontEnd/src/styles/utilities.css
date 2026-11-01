@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+/* Semantic Utilities that has relation with colors above */
+@layer utilities {
+  .bg-app {
+    background-color: var(--bg);
+  }
+  .bg-surface {
+    background-color: var(--surface);
+  }
+  .text-app {
+    color: var(--text);
+  }
+  .text-muted {
+    color: var(--muted);
+  }
+  .border-app {
+    border-color: var(--border);
+  }
+}

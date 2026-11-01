@@ -1,13 +1,23 @@
-import { useState, useEffect } from 'react';
-import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { API_PATHS, apiGet } from '../api';
-import { readTokenRoles, rolesFromUser, isAdminUser, notifyAuthChanged } from '../utils/auth';
+import { getCurrentUser } from "../services/authService";
+import { getCart } from "../services/cartService";
+import { useState, useEffect } from "react";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import {
+  readTokenRoles,
+  rolesFromUser,
+  isAdminUser,
+  notifyAuthChanged,
+} from "../utils/auth";
 
 export default function Navbar() {
   const [email, setEmail] = useState(localStorage.getItem("shop.email") || "");
   const [isAdmin, setIsAdmin] = useState(isAdminUser());
   const [count, setCount] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(
+    document.documentElement.classList.contains("dark"),
+  );
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
@@ -24,7 +34,7 @@ export default function Navbar() {
       setEmail(localStorage.getItem("shop.email") || "Signed in");
       setIsAdmin(isAdminUser());
       try {
-        const user = await apiGet("/identity/user");
+        const user = await getCurrentUser();
         if (user?.id) localStorage.setItem("shop.userId", user.id);
         const userRoles = rolesFromUser(user);
         if (userRoles.length) localStorage.setItem("shop.role", userRoles[0]);
@@ -40,7 +50,7 @@ export default function Navbar() {
         if (alive) setIsAdmin(isAdminUser());
       }
       try {
-        const cart = await apiGet(API_PATHS.cart);
+        const cart = await getCart();
         if (alive)
           setCount(
             (cart?.cartItems || []).reduce(
@@ -82,78 +92,135 @@ export default function Navbar() {
     window.dispatchEvent(new Event("shop-refresh-data"));
     window.setTimeout(() => setRefreshing(false), 350);
   }
+  function toggleDark() {
+    const next = !dark;
+    setDark(next);
+    document.documentElement.classList.toggle("dark", next);
+  }
+
+  const linkClass = ({ isActive }) =>
+    `block lg:inline-block px-3 py-2 rounded-lg text-sm transition ${
+      isActive
+        ? "bg-white/10 text-white"
+        : "text-brand-200 hover:bg-white/10 hover:text-white"
+    }`;
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark shop-navbar sticky-top">
-      <div className="container">
-        <Link className="navbar-brand d-flex align-items-center gap-2" to="/">
-          <span className="brand-mark">S</span>
+    <nav className="bg-brand-900 text-white shadow-md sticky top-0 z-30">
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between min-h-[72px]">
+        <Link
+          className="flex items-center gap-2 text-xl font-extrabold font-display"
+          to="/"
+        >
+          <span className="grid place-items-center w-9 h-9 rounded-xl bg-brand-100 text-brand-700 font-extrabold">
+            S
+          </span>
           <span>
-            Shop<span className="brand-dot">.</span>
+            Shop<span className="text-sky-400">.</span>
           </span>
         </Link>
+
         <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mainNav"
+          onClick={() => setOpen(!open)}
           aria-label="Toggle navigation"
+          className="lg:hidden p-2 rounded-lg border border-white/20"
         >
-          <span className="navbar-toggler-icon" />
+          <span className="block w-5 h-0.5 bg-white mb-1" />
+          <span className="block w-5 h-0.5 bg-white mb-1" />
+          <span className="block w-5 h-0.5 bg-white" />
         </button>
-        <div className="collapse navbar-collapse" id="mainNav">
-          <ul className="navbar-nav me-auto gap-lg-1">
-            <li className="nav-item">
-              <NavLink end className="nav-link" to="/">
+
+        <div
+          className={`${open ? "block" : "hidden"} lg:flex lg:items-center lg:flex-1 lg:justify-between`}
+        >
+          <ul className="flex flex-col lg:flex-row lg:items-center gap-1 lg:ml-6 mt-4 lg:mt-0">
+            <li>
+              <NavLink
+                end
+                className={linkClass}
+                to="/"
+                onClick={() => setOpen(false)}
+              >
                 Store
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/cart">
-                Cart <span className="cart-pill">{count}</span>
+            <li>
+              <NavLink
+                className={linkClass}
+                to="/cart"
+                onClick={() => setOpen(false)}
+              >
+                Cart{" "}
+                <span className="inline-grid place-items-center min-w-5 h-5 ml-1 px-1 bg-brand-500 rounded-full text-white text-[0.7rem]">
+                  {count}
+                </span>
               </NavLink>
             </li>
             {email && (
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/orders">
+              <li>
+                <NavLink
+                  className={linkClass}
+                  to="/orders"
+                  onClick={() => setOpen(false)}
+                >
                   My Orders
                 </NavLink>
               </li>
             )}
             {isAdmin && (
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/admin">
+              <li>
+                <NavLink
+                  className={linkClass}
+                  to="/admin"
+                  onClick={() => setOpen(false)}
+                >
                   Admin panel
                 </NavLink>
               </li>
             )}
           </ul>
-          <div className="d-flex gap-2 align-items-center nav-actions">
+
+          <div className="flex flex-wrap items-center gap-2 mt-4 lg:mt-0">
             <button
-              className="btn btn-nav-refresh"
+              onClick={toggleDark}
+              title="Toggle theme"
+              className="w-9 h-9 border border-white/20 text-white rounded-lg leading-none"
+            >
+              {dark ? "☀" : "☾"}
+            </button>
+            <button
               onClick={refreshPage}
               title="Refresh current data"
-              aria-label="Refresh data"
+              className="w-9 h-9 border border-white/20 text-white rounded-lg text-xl leading-none"
             >
-              <span className={refreshing ? "spin" : ""}>↻</span>
+              <span className={refreshing ? "inline-block animate-spin" : ""}>
+                ↻
+              </span>
             </button>
             {email ? (
               <>
-                <span className="navbar-text text-light small user-email">
+                <span className="max-w-[210px] truncate text-brand-200 text-sm">
                   {email}
                 </span>
                 <button
-                  className="btn btn-outline-light btn-sm"
                   onClick={logout}
+                  className="px-3 py-1.5 text-sm border border-white/40 text-white rounded-lg hover:bg-white/10"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link className="btn btn-outline-light btn-sm" to="/login">
+                <Link
+                  to="/login"
+                  className="px-3 py-1.5 text-sm border border-white/40 text-white rounded-lg hover:bg-white/10"
+                >
                   Login
                 </Link>
-                <Link className="btn btn-nav-primary btn-sm" to="/register">
+                <Link
+                  to="/register"
+                  className="px-3 py-1.5 text-sm bg-sky-400 text-brand-900 font-bold rounded-lg hover:bg-sky-500"
+                >
                   Create account
                 </Link>
               </>

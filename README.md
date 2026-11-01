@@ -30,6 +30,20 @@ ASP.NET Core 10 Web API for an online shop, built with Clean Architecture and CQ
 - Identity User
 - Role
 
+## Frontend
+
+The React frontend lives in [`FrontEnd/`](./FrontEnd). See
+[`FrontEnd/README.md`](./FrontEnd/README.md) for setup, scripts, and architecture.
+
+Quick start:
+
+```bash
+cd FrontEnd
+npm ci
+cp .env.example .env      # set VITE_API_BASE_URL
+npm run dev
+```
+
 ## Test Accounts
 
 **Admin**

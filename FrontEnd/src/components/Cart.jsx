@@ -3,15 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useMessage } from "../hooks/useMessage";
 import Alert from "./Alert";
 import {
-  API_PATHS,
-  apiGet,
-  apiPatch,
-  apiDelete,
-  apiPost,
-  money,
-  safeText,
-  getCurrentUserId,
-} from "../api";
+  getCart,
+  clearCart as clearCartService,
+} from "../services/cartService";
+import { updateCartItem, deleteCartItem } from "../services/cartItemService";
+import { createOrder } from "../services/orderService";
+import { getCurrentUserId } from "../services/authService";
+import { money, safeText } from "../utils/format";
 
 export default function Cart() {
   const [cart, setCart] = useState(null),
@@ -20,7 +18,7 @@ export default function Cart() {
     navigate = useNavigate();
   const load = async () => {
     try {
-      setCart(await apiGet(API_PATHS.cart));
+      setCart(await getCart());
     } catch (e) {
       show(e.message, "danger");
       setCart({ cartItems: [], totalPrice: 0 });
@@ -35,10 +33,7 @@ export default function Cart() {
   const items = Array.isArray(cart?.cartItems) ? cart.cartItems : [];
   async function update(item, quantity) {
     try {
-      await apiPatch(
-        `${API_PATHS.cartItems}/${encodeURIComponent(item.cartItemId)}`,
-        { quantity },
-      );
+      await updateCartItem(item.cartItemId, quantity);
       await load();
     } catch (e) {
       show(e.message, "danger");
@@ -46,9 +41,7 @@ export default function Cart() {
   }
   async function remove(item) {
     try {
-      await apiDelete(
-        `${API_PATHS.cartItems}/${encodeURIComponent(item.cartItemId)}`,
-      );
+      await deleteCartItem(item.cartItemId);
       await load();
     } catch (e) {
       show(e.message, "danger");
@@ -56,7 +49,7 @@ export default function Cart() {
   }
   async function clearCart() {
     try {
-      await apiDelete(API_PATHS.cart);
+      await clearCartService();
       await load();
       show("Cart cleared.", "success");
     } catch (e) {
@@ -78,8 +71,8 @@ export default function Cart() {
     }
     try {
       setBusy(true);
-      await apiPost(API_PATHS.orders);
-      await apiDelete(API_PATHS.cart);
+      await createOrder();
+      await clearCartService();
       show("Order created successfully.", "success");
       await load();
       navigate("/orders");
@@ -90,38 +83,42 @@ export default function Cart() {
     }
   }
   return (
-    <main className="container py-4">
-      <h1 className="h3 mb-4">Shopping Cart</h1>
+    <main className="max-w-7xl mx-auto px-4 py-6">
+      <h1 className="text-2xl font-extrabold mb-6 font-display">
+        Shopping Cart
+      </h1>
       <Alert message={alert?.message} type={alert?.type} onClose={clear} />
-      <div className="row g-4">
-        <div className="col-lg-8">
-          <div className="card">
-            <div className="table-responsive">
-              <table className="table align-middle mb-0">
-                <thead>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <div className="bg-surface border border-app rounded-2xl shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-cream-200 dark:bg-brand-900/30 text-left text-xs uppercase tracking-wider text-muted">
                   <tr>
-                    <th>Product</th>
-                    <th>Unit price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th></th>
+                    <th className="p-3">Product</th>
+                    <th className="p-3">Unit price</th>
+                    <th className="p-3">Quantity</th>
+                    <th className="p-3">Total</th>
+                    <th className="p-3"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {items.length ? (
                     items.map((i) => (
-                      <tr key={i.cartItemId}>
-                        <td>
+                      <tr
+                        key={i.cartItemId}
+                        className="border-t border-app hover:bg-cream-100 dark:hover:bg-white/5"
+                      >
+                        <td className="p-3">
                           {safeText(i.productName, `Product ${i.productId}`)}
                         </td>
-                        <td>{money(i.price)}</td>
-                        <td>{i.quantity}</td>
-                        <td>{money(i.totalPrice)}</td>
-                        <td className="text-nowrap">
-                          <div className="btn-group btn-group-sm me-2">
+                        <td className="p-3">{money(i.price)}</td>
+                        <td className="p-3">{i.quantity}</td>
+                        <td className="p-3">{money(i.totalPrice)}</td>
+                        <td className="p-3 whitespace-nowrap">
+                          <div className="inline-flex rounded-lg overflow-hidden border border-app mr-2">
                             <button
-                              className="btn btn-outline-secondary"
-                              title="Decrease quantity"
+                              className="px-2.5 py-1 bg-surface text-muted hover:bg-cream-200"
                               onClick={() =>
                                 update(i, Math.max(1, Number(i.quantity) - 1))
                               }
@@ -129,15 +126,14 @@ export default function Cart() {
                               −
                             </button>
                             <button
-                              className="btn btn-outline-secondary"
-                              title="Increase quantity"
+                              className="px-2.5 py-1 bg-surface text-muted hover:bg-cream-200"
                               onClick={() => update(i, Number(i.quantity) + 1)}
                             >
                               +
                             </button>
                           </div>
                           <button
-                            className="btn btn-sm btn-outline-danger"
+                            className="px-2.5 py-1 text-sm border border-blush-400 text-blush-500 rounded-lg hover:bg-blush-100"
                             onClick={() => remove(i)}
                           >
                             Remove
@@ -147,10 +143,7 @@ export default function Cart() {
                     ))
                   ) : (
                     <tr>
-                      <td
-                        colSpan="5"
-                        className="text-center text-secondary py-4"
-                      >
+                      <td colSpan="5" className="text-center text-muted py-6">
                         Your cart is empty.
                       </td>
                     </tr>
@@ -160,31 +153,32 @@ export default function Cart() {
             </div>
           </div>
         </div>
-        <div className="col-lg-4">
-          <div className="card">
-            <div className="card-body">
-              <h2 className="h5">Summary</h2>
-              <div className="d-flex justify-content-between mb-3">
-                <span>Total</span>
-                <strong>{money(cart?.totalPrice)}</strong>
-              </div>
-              <button
-                className="btn btn-primary w-100"
-                disabled={busy}
-                onClick={checkout}
-              >
-                {busy ? "Processing…" : "Place order"}
-              </button>
-              <button
-                className="btn btn-outline-danger w-100 mt-2"
-                onClick={clearCart}
-              >
-                Clear cart
-              </button>
-              <p className="small text-secondary mt-3 mb-0">
-                Sign in before using your cart.
-              </p>
+
+        <div className="lg:col-span-1">
+          <div className="bg-surface border border-app rounded-2xl shadow-sm p-5">
+            <h2 className="text-lg font-bold mb-4">Summary</h2>
+            <div className="flex justify-between mb-4">
+              <span>Total</span>
+              <strong className="text-brand-700">
+                {money(cart?.totalPrice)}
+              </strong>
             </div>
+            <button
+              className="w-full bg-brand-700 text-white font-semibold rounded-lg py-2.5 hover:bg-brand-900 disabled:opacity-60"
+              disabled={busy}
+              onClick={checkout}
+            >
+              {busy ? "Processing…" : "Place order"}
+            </button>
+            <button
+              className="w-full mt-2 border border-blush-400 text-blush-500 font-semibold rounded-lg py-2.5 hover:bg-blush-100"
+              onClick={clearCart}
+            >
+              Clear cart
+            </button>
+            <p className="text-sm text-muted mt-4 mb-0">
+              Sign in before using your cart.
+            </p>
           </div>
         </div>
       </div>
