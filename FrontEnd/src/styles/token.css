@@ -1,0 +1,32 @@
+@theme {
+  --color-brand-900: #2f4373;
+  --color-brand-700: #425b9a; /* Main Dark Blue */
+  --color-brand-500: #5f7bc4;
+  --color-brand-300: #9fb4ea;
+  --color-sky-400: #76c0ec; /* Light Blue */
+  --color-cream-100: #fff6dc; /* Cream */
+  --color-cream-200: #f3e7c4;
+  --color-blush-400: #ff95a5; /* Light Pink*/
+  --color-blush-500: #f0758a;
+
+  --font-sans: "DM Sans", sans-serif;
+  --font-display: "Manrope", "DM Sans", sans-serif;
+}
+
+/* Set Light theme as default */
+:root {
+  --bg: var(--color-cream-100);
+  --surface: #ffffff;
+  --text: #1b2438;
+  --muted: #5f6b84;
+  --border: #e6e1d2;
+}
+
+/* Classes for dark theme on <html> */
+.dark {
+  --bg: #0e1526;
+  --surface: #172136;
+  --text: #eef2fb;
+  --muted: #9aa7c2;
+  --border: #243050;
+}
